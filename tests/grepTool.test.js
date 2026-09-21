@@ -17,7 +17,7 @@ async function runTests() {
     const result = await grepTool({
       pattern: "Clear Chat|clear chat|trash|delete|mdi-|icon|<svg|material-icons", 
       path: projectRoot,
-      include: "*.ejs"
+      include: "*.ejs", workingDirectory: projectRoot
     });
     
     const hasMatches = result.matches && result.matches.length > 0;
@@ -49,7 +49,7 @@ async function runTests() {
     const result = await grepTool({
       pattern: "Clear Chat",
       path: projectRoot,
-      include: "*.ejs"
+      include: "*.ejs", workingDirectory: projectRoot
     });
     
     const hasMatches = result.matches && result.matches.length > 0;
@@ -74,7 +74,7 @@ async function runTests() {
     const result = await grepTool({
       pattern: "(Clear Chat)",
       path: projectRoot,
-      include: "*.ejs"
+      include: "*.ejs", workingDirectory: projectRoot
     });
     
     const hasMatches = result.matches && result.matches.length > 0;
@@ -100,13 +100,13 @@ async function runTests() {
     const projectResult = await grepTool({
       pattern: "Clear Chat",
       path: projectRoot,
-      include: "**/*.ejs"
+      include: "**/*.ejs", workingDirectory: projectRoot
     });
     
     const viewsResult = await grepTool({
       pattern: "Clear Chat",
       path: path.join(projectRoot, 'views'),
-      include: "**/*.ejs"
+      include: "**/*.ejs", workingDirectory: projectRoot
     });
     
     console.log(`Project-wide search found matches: ${projectResult.matches?.length > 0}`);

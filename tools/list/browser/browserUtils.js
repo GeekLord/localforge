@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import crypto from 'crypto';
 import {generateImageDescription} from "../../../src/services/image/index.js";
-import {MAIN_MODEL} from "../../../src/middleware/llm.js"; // For generating unique IDs
+import {MAIN_MODEL} from "../../../src/middleware/llm.js";
 
 // In-memory storage for browser instances, pages, and console logs
 const browsers = {};

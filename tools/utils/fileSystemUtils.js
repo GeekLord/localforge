@@ -222,7 +222,7 @@ const replace = async ({ file_path, content, workingDirectory }) => {
  * @returns {string} The normalized absolute path.
  */
 function normalizePath(filePath) {
-    if (filePath === undefined) return path.resolve('.');
+    if (typeof filePath !== 'string') { throw new TypeError('filePath must be a string'); }
     // Resolve to make absolute and handle .., ., etc. relative to process.cwd() initially
     let normalized = path.resolve(filePath);
 
