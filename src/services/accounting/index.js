@@ -11,6 +11,26 @@ import pricing from '../../config/pricing.js';
 const accountingEvents = new EventEmitter();
 
 /**
+ * Resolve pricing for a model name, supporting exact matches and common variants/prefixes
+ */
+function getPricingForModel(model) {
+    if (!model || typeof model !== 'string') return { in: 0, out: 0 };
+    if (pricing[model]) return pricing[model];
+
+    const lower = model.toLowerCase();
+    if (pricing[lower]) return pricing[lower];
+
+    // Try matching prefix (e.g., date suffixes)
+    for (const [key, rates] of Object.entries(pricing)) {
+        const lowerKey = key.toLowerCase();
+        if (lower.startsWith(lowerKey) || lowerKey.startsWith(lower)) {
+            return rates;
+        }
+    }
+    return { in: 0, out: 0 };
+}
+
+/**
  * Add token usage to a session's accounting data and recalculate costs.
  * MUTATES the passed accounting object.
  * 
@@ -33,7 +53,7 @@ function addUsage(accountingObject, model, promptTokens, completionTokens) {
     accountingObject.totalUSD = Object
         .entries(accountingObject.models)
         .reduce((sum, [m, v]) => {
-            const p = pricing[m] || { in: 0, out: 0 };
+            const p = getPricingForModel(m);
             return sum + v.input * p.in + v.output * p.out;
         }, 0);
 

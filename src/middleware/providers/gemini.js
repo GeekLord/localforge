@@ -47,8 +47,8 @@ function processGeminiOptions(options) {
         responseMimeType: 'text/plain',
     };
 
-    // TODO: think of a better way to do this
-    if(options.model.indexOf('flash') > 0) {
+    // Disable thinkingConfig for older flash models that do not support it (e.g. gemini-1.5-flash, gemini-2.0-flash)
+    if (typeof options.model === 'string' && options.model.includes('flash') && !options.model.includes('2.5') && !options.model.includes('3.')) {
         delete config.thinkingConfig;
     }
 

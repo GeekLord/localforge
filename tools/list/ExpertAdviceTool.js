@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import ejs from 'ejs';
-import {callLLMByType, EXPERT_MODEL} from "../../src/middleware/llm.js";
+import {callLLMByType, EXPERT_MODEL, getModelNameByType} from "../../src/middleware/llm.js";
 import {getPromptOverride} from "../../src/utils.js";
 
 // Get __dirname equivalent in ESM
@@ -52,7 +52,7 @@ export default {
         const estimateTokens = (str) => Math.ceil((str || '').length / 4.91);
 
         // Start building the file context and decide which model to use
-        let chosenModel = 'o3'; // default to o3 (OpenAI gpt‑4o‑mini)
+        let chosenModel = getModelNameByType(EXPERT_MODEL) || 'gpt-6-astra';
         let currentTokenCount = 0;
         let fileContextBlocks = '';
 

@@ -123,10 +123,19 @@ export default {
 
         let client = new OpenAI(init);
 
-        // this needs this weird api change for whoever knows why
-        if (options.model === 'o4-mini' || options.model === 'o3') {
-            options.max_completion_tokens = options.max_tokens;
-            delete options.max_tokens;
+        // OpenAI reasoning models (o1, o3, o4-mini, etc.) require max_completion_tokens and do not support custom temperature
+        const isReasoningModel = typeof options.model === 'string' && (
+            /^o\d/i.test(options.model) ||
+            options.model.startsWith('o1') ||
+            options.model.startsWith('o3') ||
+            options.model.startsWith('o4')
+        );
+
+        if (isReasoningModel) {
+            if (options.max_tokens !== undefined) {
+                options.max_completion_tokens = options.max_tokens;
+                delete options.max_tokens;
+            }
             delete options.temperature;
         }
 

@@ -57,12 +57,18 @@ export class Store {
         
         const { providers = [], llmConfig = {} } = modelsData;
         
+        const getDefaultFallbackModel = (name) => {
+            if (name === 'aux') return 'o4-mini';
+            if (name === 'expert') return 'gpt-6-astra';
+            return 'gpt-6-astra';
+        };
+
         // If no config exists for this name, return a default config
         if (!llmConfig[llmConfigName]) {
-            // Return a default configuration with OpenAI/GPT-4 as fallback
+            // Return a default configuration with OpenAI as fallback
             return {
                 config: llmConfigName,
-                model: 'gpt-4-turbo',  // Default model as fallback
+                model: getDefaultFallbackModel(llmConfigName),
                 provider: {
                     name: 'openai',    // Default provider
                     type: 'openai',    // Default type
@@ -78,7 +84,7 @@ export class Store {
         if (!provider) {
             return {
                 config: llmConfigName,
-                model: config.model || 'gpt-4-turbo',  // Use existing model or default
+                model: config.model || getDefaultFallbackModel(llmConfigName),
                 provider: {
                     name: 'openai',    // Default provider
                     type: 'openai',    // Default type

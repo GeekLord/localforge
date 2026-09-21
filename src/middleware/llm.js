@@ -43,7 +43,7 @@ function getProviderTypeByProviderName(providerName) {
 /**
  * Central entry point.
  * @param {string} prompt
- * @param {object} opts  e.g. { model: 'gpt-4o-mini', temperature: 0.7 }
+ * @param {object} opts  e.g. { model: 'gpt-6-astra', temperature: 0.7 }
  */
 export async function callLLMProvider(providerName, options, sessionData = null) {
     const modelConfig = store.getModelConfigFor(providerName);
