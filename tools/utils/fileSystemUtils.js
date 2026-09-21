@@ -3,7 +3,8 @@ import { promises as fsp } from 'fs';
 import path from 'path';
 import readline from 'readline';
 import micromatch from 'micromatch';
-import {generateImageDescription, MAIN_MODEL} from "../../src/index.js";
+import {generateImageDescription} from "../../src/services/image/index.js";
+import {MAIN_MODEL} from "../../src/middleware/llm.js";
 
 // The working directory will now be dynamically provided via the socket connection
 let TOOL_ALLOWED_BASE = process.cwd();
@@ -221,6 +222,7 @@ const replace = async ({ file_path, content, workingDirectory }) => {
  * @returns {string} The normalized absolute path.
  */
 function normalizePath(filePath) {
+    if (typeof filePath !== 'string') { throw new TypeError('filePath must be a string'); }
     // Resolve to make absolute and handle .., ., etc. relative to process.cwd() initially
     let normalized = path.resolve(filePath);
 
